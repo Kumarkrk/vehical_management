@@ -4,6 +4,7 @@ package com.te.config;
 import java.util.Properties;
 
 import javax.sql.DataSource;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import org.hibernate.SessionFactory;
 
@@ -28,15 +29,16 @@ public class DataSourceConfig {
 
         DriverManagerDataSource dataSource =
                 new DriverManagerDataSource();
+        Dotenv dotenv = Dotenv.configure()
+                .directory("D:/java_projects/vehicleusingmvc")
+                .ignoreIfMissing()
+                .load();
 
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setDriverClassName("org.postgresql.Driver");
 
-        dataSource.setUrl(
-            "jdbc:mysql://localhost:3306/vehicle_inventory"
-        );
-
-        dataSource.setUsername("root");
-        dataSource.setPassword("12345");
+        dataSource.setUrl(dotenv.get("DB_URL"));
+        dataSource.setUsername(dotenv.get("DB_USERNAME"));
+        dataSource.setPassword(dotenv.get("DB_PASSWORD"));
 
         return dataSource;
     }
@@ -55,7 +57,7 @@ public class DataSourceConfig {
 
         properties.put(
             "hibernate.dialect",
-            "org.hibernate.dialect.MySQLDialect"
+            "org.hibernate.dialect.PostgreSQLDialect"
         );
 
         properties.put("hibernate.hbm2ddl.auto", "update");
