@@ -2,12 +2,9 @@
 package com.te.config;
 
 import java.util.Properties;
-
 import javax.sql.DataSource;
-import io.github.cdimascio.dotenv.Dotenv;
 
 import org.hibernate.SessionFactory;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,26 +16,29 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {
-    "com.te"
-})
+@ComponentScan(basePackages = "com.te")
 public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
 
+        String dbUrl = System.getenv("DB_URL");
+        String dbUsername = System.getenv("DB_USERNAME");
+        String dbPassword = System.getenv("DB_PASSWORD");
+
+        if (dbUrl == null || dbUsername == null || dbPassword == null) {
+            throw new IllegalStateException(
+                "Database environment variables are missing"
+            );
+        }
+
         DriverManagerDataSource dataSource =
                 new DriverManagerDataSource();
-        Dotenv dotenv = Dotenv.configure()
-                .directory("D:/java_projects/vehicleusingmvc")
-                .ignoreIfMissing()
-                .load();
 
         dataSource.setDriverClassName("org.postgresql.Driver");
-
-        dataSource.setUrl(dotenv.get("DB_URL"));
-        dataSource.setUsername(dotenv.get("DB_USERNAME"));
-        dataSource.setPassword(dotenv.get("DB_PASSWORD"));
+        dataSource.setUrl(dbUrl);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
 
         return dataSource;
     }
