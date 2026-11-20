@@ -12,8 +12,10 @@ RUN mvn clean package -DskipTests
 # Runtime stage
 FROM tomcat:10.1-jdk21-temurin
 
+RUN rm -rf /usr/local/tomcat/webapps/ROOT
+
 COPY --from=build /app/target/vehicleusingmvc.war \
-    /usr/local/tomcat/webapps/vehicleusingmvc.war
+    /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 10000
 
