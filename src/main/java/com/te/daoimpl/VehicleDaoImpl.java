@@ -111,16 +111,16 @@ public class VehicleDaoImpl implements VehicleDao{
 		}
 		if(brand!=null && !brand.isBlank())
 		{
-			statement.append(" And v.brand LIKE:brand");
+			statement.append(" And Lower(v.brand) LIKE:brand");
 			 paramNames.add("brand");
-			 paramValues.add("%" + brand.trim() + "%");  
+			 paramValues.add("%" + brand.trim().toLowerCase() + "%");  
 		        
 		}
 		if(model!=null && !model.isBlank())	
 		{
-			statement.append(" And v.model LIKE:model");
+			statement.append(" And LOWER(v.model) LIKE:model");
 			  paramNames.add("model");
-			  paramValues.add("%" + model.trim() + "%");
+			  paramValues.add("%" + model.trim().toLowerCase() + "%");
 		        
 		}
 		
