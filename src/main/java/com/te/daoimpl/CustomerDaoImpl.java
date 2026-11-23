@@ -82,7 +82,7 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         if (mobileNo != null && !mobileNo.isBlank()) {
-            hql.append(" AND c.mobileNo = :mobileNo");
+            hql.append(" AND c.mobileNo LIKE :mobileNo");
             paramNames.add("mobileNo");
             paramValues.add(mobileNo.trim());
         }
