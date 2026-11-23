@@ -93,7 +93,7 @@ public class CustomerServiceImpl implements CustomerService {
 		        }
 		        if(customerObj.getName()!=null && !customerObj.getMobileNo().isBlank())
 		        {
-		        	customer.setName(customerObj.getMobileNo());
+		        	customer.setName(customerObj.getName());
 		        }
 		        
 		        customerDao.updateCustomer(customer);
